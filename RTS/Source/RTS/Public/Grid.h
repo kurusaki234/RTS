@@ -128,6 +128,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY()
 	FVector gridTransform;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
@@ -146,10 +147,13 @@ public:
 	int32 maxDepth;		// Grid Depth	(y)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
-	float tileSize;
+	int32 gridSize;
 
 	UPROPERTY(EditAnywhere)
-	UMaterialInstance* materialInstance;
+	UMaterialInstance* buildableMaterial = nullptr;
+	
+	UPROPERTY(EditAnywhere)
+	UMaterialInstance* notBuildableMaterial = nullptr;
 
 private:
 	void AddUninitialized(const int32 RowCount, const int32 ColCount);

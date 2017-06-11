@@ -8,6 +8,9 @@
 /**
  * 
  */
+
+class URTS_UI;
+
 UCLASS()
 class RTS_API ARTSPlayerController : public APlayerController
 {
@@ -22,4 +25,12 @@ class RTS_API ARTSPlayerController : public APlayerController
 	virtual void Tick(float DeltaSeconds) override;
 
 	bool GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const;
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf <URTS_UI> RTSUIWidgetBP;
+
+private:
+	// UI Reference
+	URTS_UI* RTSUIWidget;
 };

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
+#include "RTS_UI.h"
 #include "StaticFunctionLibrary.h"
 #include "RTSPlayerController.h"
 
@@ -12,6 +13,13 @@ ARTSPlayerController::ARTSPlayerController()
 void ARTSPlayerController::Possess(APawn* Pawn)
 {
 	Super::Possess(Pawn);
+
+	if (RTSUIWidgetBP)
+	{
+		RTSUIWidget = CreateWidget <URTS_UI>(this, RTSUIWidgetBP);
+
+		RTSUIWidget->AddToViewport();
+	}
 }
 
 void ARTSPlayerController::BeginPlay()

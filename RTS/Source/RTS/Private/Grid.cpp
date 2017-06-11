@@ -17,6 +17,29 @@ AGrid::AGrid()
 	gridTransform = FVector(0);
 
 	//Clear();
+	static ConstructorHelpers::FObjectFinder <UMaterialInstance> buildableObject
+	(TEXT("MaterialInstance'/Game/Material/Mat_DecalGrid_Inst.Mat_DecalGrid_Inst'"));
+	static ConstructorHelpers::FObjectFinder <UMaterialInstance> notBuildableObject
+	(TEXT("MaterialInstance'/Game/Material/Mat_GridDecal_Inst.Mat_GridDecal_Inst'"));
+
+	// Initialize buildable material
+	if (buildableObject.Object == nullptr)
+	{
+		return;
+	}
+	else
+	{
+		buildableMaterial = buildableObject.Object;
+	}
+
+	if (notBuildableObject.Object == nullptr)
+	{
+		return;
+	}
+	else
+	{
+		notBuildableMaterial = notBuildableObject.Object;
+	}
 }
 
 AGrid::~AGrid()
@@ -28,6 +51,9 @@ AGrid::~AGrid()
 void AGrid::OnConstruction(const FTransform& transform)
 {
 	Super::OnConstruction(transform);
+
+	buildableMaterial = buildableMaterial;
+	notBuildableMaterial = notBuildableMaterial;
 
 	// Spawn Parameters for static mesh instantiation
 	/*// Spawn Info
@@ -43,42 +69,43 @@ void AGrid::OnConstruction(const FTransform& transform)
 			decal->DestroyComponent();
 		}*/
 	
-		/*AddUninitialized(maxWidth, maxDepth);
+		AddUninitialized(maxWidth, maxDepth);
 
-		for (int y = 0; y < maxWidth; y++)
+		int32 i = 0;
+		
+		for (int32 y = 0; y < maxWidth; y++)
 		{
-			for (int x = 0; x < maxDepth; x++)
+			for (int32 x = 0; x < maxDepth; x++)
 			{
-				gridTransform.X = defaultPosition + (int)x / maxDepth * tileSize;
-				gridTransform.Y = defaultPosition + (int)x % maxWidth * tileSize;
+				gridTransform.X = defaultPosition + (int32)i / maxDepth * gridSize;
+				gridTransform.Y = defaultPosition + (int32)i % maxWidth * gridSize;
 				gridTransform.Z = 100;
 
 				FGridProperty gridProperty(
-					FVector(300.0f, tileSize, tileSize),
+					FVector(300.0f, gridSize, gridSize),
 					FVector(gridTransform),
 					FRotator(-90.0f, 0.0f, 0.0f),	// -90.0 pitch rotation to get the correct decal rotation
-					500.0f
+					5.0f
 				);
-
+			
 				if (gridMap.Rows[y].Columns[x].gridState == EGridState::GS_Buildable)
 				{
-					gridProperty.materialInstance = ConstructorHelpers::FObjectFinder <UMaterialInstance>
-						(TEXT("Material'/Game/Material/Mat_DecalGrid_Inst'")).Object;
+					gridProperty.materialInstance = buildableMaterial;
 				}
 				else if (gridMap.Rows[y].Columns[x].gridState == EGridState::GS_NotBuildable)
 				{
-					gridProperty.materialInstance = ConstructorHelpers::FObjectFinder <UMaterialInstance>
-						(TEXT("Material'/Game/Material/Mat_DecalGrid_Inst'")).Object;
+					gridProperty.materialInstance = notBuildableMaterial;
 				}
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("HELLO"));
-				UE_LOG(LogTemp, Warning, TEXT("Material Instance: %s"), *gridProperty.materialInstance->GetName());
+				
+				//UE_LOG(LogTemp, Warning, TEXT("Material Instance: %s"), *gridProperty.materialInstance->GetName());
 
 				gridMap.Rows[y].Columns[x] = gridProperty;
 				gridMap.Rows[y].Columns[x].SpawnDecal(this);
+				i++;
 			}
 		}
-		*/
-		for (int i = 0; i < maxWidth * maxDepth; i++)
+		
+		/*for (int i = 0; i < maxWidth * maxDepth; i++)
 		{
 			gridTransform.X = defaultPosition + (int)i / maxDepth * tileSize;
 			gridTransform.Y = defaultPosition + (int)i % maxWidth * tileSize;
@@ -87,7 +114,7 @@ void AGrid::OnConstruction(const FTransform& transform)
 
 
 			/** Decal Instantiation **/
-			UDecalComponent* tempDecal = UGameplayStatics::SpawnDecalAtLocation
+			/*UDecalComponent* tempDecal = UGameplayStatics::SpawnDecalAtLocation
 			(
 				this,
 				materialInstance,
@@ -95,8 +122,8 @@ void AGrid::OnConstruction(const FTransform& transform)
 				FVector(gridTransform),
 				FRotator(-90.0f, 0.0f, 0.0f),	// -90.0 pitch rotation to get the correct decal rotation
 				500.0f
-			);
-
+			);*/
+			
 			// Store inside to an array so we can register or unregister it whenever we need
 			//DecalArray.Add(tempDecal);
 
@@ -123,7 +150,7 @@ void AGrid::OnConstruction(const FTransform& transform)
 			newGrid->InstancedStaticMeshComponent->SetMaterial(0, materialInstance);*/
 
 			//UE_LOG(LogTemp, Warning, TEXT("Tile Counter: %d spawned at %s"), i, *newGrid->GetActorLocation().ToString());
-		}
+		//}
 		bSpawned = true;
 	}
 }

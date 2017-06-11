@@ -1,9 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
+#include "Grid.h"
 #include "TerrainGridComponent.h"
 
-int32 UTerrainGridComponent::AddInstance(const FTransform & InstanceTransform)
+UTerrainGridComponent::UTerrainGridComponent()
 {
-	return int32();
+	materialInstance = CreateDefaultSubobject<UMaterialInstance>(TEXT("Material Instance"));
 }
+

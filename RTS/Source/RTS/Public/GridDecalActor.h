@@ -16,6 +16,4 @@ class RTS_API AGridDecalActor : public ADecalActor
 public:
 	AGridDecalActor();
 
-	UDecalComponent* Decal = nullptr;
-
 };

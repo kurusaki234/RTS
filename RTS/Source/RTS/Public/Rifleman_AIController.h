@@ -29,6 +29,7 @@ class RTS_API ARifleman_AIController : public AAIController
 	/*******************************/
 
 	// Store all the available targetPoint instances.
+	UPROPERTY()
 	TArray <AActor*> TargetPoints;
 
 	// Possess is executed when the character we want to control is spawned.
@@ -43,5 +44,6 @@ public:
 
 	FORCEINLINE TArray <AActor*> GetAvailableTargetPoints() { return TargetPoints; }
 	
+	UPROPERTY()
 	int32 CurrentPatrolPoint = 0;
 };

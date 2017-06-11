@@ -8,11 +8,27 @@
 /**
  * 
  */
+// Forward declarations
+//AGrid* gridClass;
+
 UCLASS()
 class RTS_API UTerrainGridComponent : public UInstancedStaticMeshComponent
 {
 	GENERATED_BODY()
 
-	UFUNCTION(BlueprintCallable, Category = "Components|InstancedStaticMesh")
-	virtual int32 AddInstance(const FTransform& InstanceTransform);
+public:
+	// Consturctor
+	UTerrainGridComponent();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+	int32 buildingWidth;	// (x)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+	int32 buildingDepth;	// (y)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+	int32 gridSize;
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	UMaterialInstance* materialInstance = nullptr;
 };
