@@ -23,10 +23,10 @@ protected:
 
 	// The radar radius
 	UPROPERTY(EditAnywhere, Category = "Radar")
-		float SearchRadius = 100.0f;
+		float SearchRadius = 100.0;
 
 	UPROPERTY(EditAnywhere, Category = "Radar")
-		float DegreeStep = 0.5f;
+		float DegreeStep = 0.25f;
 
 	// The pixel size of the drawable actors
 	UPROPERTY(EditAnywhere, Category = "Radar")

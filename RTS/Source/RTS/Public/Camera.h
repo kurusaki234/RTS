@@ -7,6 +7,7 @@
 
 class ARifleman;
 class ARifleman_AIController;
+class ASpawnPoint;
 
 UCLASS()
 class RTS_API ACamera : public APawn
@@ -37,4 +38,13 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
 	TSubclassOf <ARifleman> ActorBP;
+
+	UPROPERTY()
+	TArray<AActor*> SpawnPoints;
+
+	UPROPERTY(EditAnywhere, Category = "Enemy Spawn Properties")
+	float LoopTime;
+
+	UFUNCTION()
+	void SpawnEnemies();
 };

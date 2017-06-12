@@ -3,6 +3,7 @@
 #include "RTS.h"
 #include "Rifleman.h"
 #include "Rifleman_AIController.h"
+#include "SpawnPoint.h"
 #include "Camera.h"
 
 
@@ -19,6 +20,9 @@ void ACamera::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	FTimerHandle TimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACamera::SpawnEnemies, LoopTime, true);
 }
 
 // Called every frame
@@ -63,4 +67,30 @@ void ACamera::QuickSpawn()
 	}
 }
 
+void ACamera::SpawnEnemies()
+{
+	FActorSpawnParameters SpawnInfo;
 
+	UWorld* const World = GetWorld();
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass() , SpawnPoints);
+
+	if (SpawnPoints.Num() > 0)
+	{
+		int32 randomSpawnValue = FMath::RandRange(0, SpawnPoints.Num() - 1);
+
+		FVector NewLocation = SpawnPoints[randomSpawnValue]->GetActorLocation();
+
+		ARifleman* rifleman = World->SpawnActor<ARifleman>(ActorBP, NewLocation, FRotator::ZeroRotator, SpawnInfo);
+
+		rifleman->SetActorScale3D(FVector(0.4));
+
+		rifleman->GetCharacterMovement()->MaxWalkSpeed = 200.0f;
+
+		rifleman->AIControllerType = ControllerType::CT_Bot;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Please put spawn points in order to spawn enemies"));
+	}
+}

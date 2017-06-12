@@ -5,6 +5,13 @@
 #include "GameFramework/Character.h"
 #include "Rifleman.generated.h"
 
+UENUM()
+enum class ControllerType
+{
+	CT_Player	UMETA(DisplayName = "Player"),
+	CT_Bot		UMETA(DisplayName = "Bot")
+};
+
 UCLASS()
 class RTS_API ARifleman : public ACharacter
 {
@@ -27,4 +34,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "BehaviorTree")
 	class UBehaviorTree* BehaviorTree;
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	ControllerType AIControllerType;
 };

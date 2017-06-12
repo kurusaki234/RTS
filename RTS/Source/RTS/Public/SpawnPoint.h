@@ -3,13 +3,17 @@
 #pragma once
 
 #include "Engine/TargetPoint.h"
-#include "AITargetPoint.generated.h"
+#include "SpawnPoint.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RTS_API AAITargetPoint : public ATargetPoint
+class RTS_API ASpawnPoint : public ATargetPoint
 {
 	GENERATED_BODY()
+	
+	
+	
+	
 };
