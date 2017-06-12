@@ -55,20 +55,9 @@ void AGrid::OnConstruction(const FTransform& transform)
 	buildableMaterial = buildableMaterial;
 	notBuildableMaterial = notBuildableMaterial;
 
-	// Spawn Parameters for static mesh instantiation
-	/*// Spawn Info
-	FActorSpawnParameters spawnInfo;
-
-	spawnInfo.bNoFail = true;*/
-
 	// Spawn grid 
 	if (!bSpawned)
 	{
-		/*for(auto& decal : DecalArray)
-		{
-			decal->DestroyComponent();
-		}*/
-	
 		AddUninitialized(maxWidth, maxDepth);
 
 		int32 i = 0;
@@ -105,52 +94,6 @@ void AGrid::OnConstruction(const FTransform& transform)
 			}
 		}
 		
-		/*for (int i = 0; i < maxWidth * maxDepth; i++)
-		{
-			gridTransform.X = defaultPosition + (int)i / maxDepth * tileSize;
-			gridTransform.Y = defaultPosition + (int)i % maxWidth * tileSize;
-			gridTransform.Z = 100;
-
-
-
-			/** Decal Instantiation **/
-			/*UDecalComponent* tempDecal = UGameplayStatics::SpawnDecalAtLocation
-			(
-				this,
-				materialInstance,
-				FVector(300.0f, tileSize, tileSize),
-				FVector(gridTransform),
-				FRotator(-90.0f, 0.0f, 0.0f),	// -90.0 pitch rotation to get the correct decal rotation
-				500.0f
-			);*/
-			
-			// Store inside to an array so we can register or unregister it whenever we need
-			//DecalArray.Add(tempDecal);
-
-			// Store x, y and z value into a 3D array / vector for grid building system
-			
-
-			/** Static Mesh Instantiation **/
-			/*FTransform newTransform = FTransform
-			(
-			FRotator::ZeroRotator,
-			FVector(gridTransform),
-			FVector(gridProperty.tileSize / 250.0f, gridProperty.tileSize / 250.0f, 0.01f)
-			);
-
-			ATerrainGrid* newGrid = GetWorld()->SpawnActor<ATerrainGrid>(
-			ATerrainGrid::StaticClass(),
-			newTransform,
-			spawnInfo);
-
-			if (!newGrid) return;
-			if (!newGrid->InstancedStaticMeshComponent) return;
-
-			newGrid->InstancedStaticMeshComponent->AddInstance(UKismetMathLibrary::Conv_VectorToTransform(FVector(0)));
-			newGrid->InstancedStaticMeshComponent->SetMaterial(0, materialInstance);*/
-
-			//UE_LOG(LogTemp, Warning, TEXT("Tile Counter: %d spawned at %s"), i, *newGrid->GetActorLocation().ToString());
-		//}
 		bSpawned = true;
 	}
 }
@@ -160,20 +103,6 @@ void AGrid::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//static ConstructorHelpers::FObjectFinder<UMaterial> Material (TEXT("Material'/Game/Material/Mat_GridDecal.Mat_GridDecal'"));
-
-	//UMaterialInterface* decalMaterial = (UMaterial*)Decal.Object;
-
-	
-	/*if (Decal.Object != NULL)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Found"));
-
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Couldn't find any decal file."));
-	}*/
 }
 
 // Called every frame

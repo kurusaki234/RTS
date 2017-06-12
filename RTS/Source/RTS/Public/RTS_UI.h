@@ -12,4 +12,6 @@ UCLASS()
 class RTS_API URTS_UI : public UUserWidget
 {
 	GENERATED_BODY()
+
+
 };
