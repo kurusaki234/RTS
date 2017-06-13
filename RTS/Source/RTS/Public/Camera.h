@@ -22,12 +22,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY()
-	UCameraComponent* CameraBoom = nullptr;
-
-	UPROPERTY()
-	UArrowComponent* OriginPoint = nullptr;
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -45,49 +39,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
 	TSubclassOf <ARifleman> ActorBP;
 
-	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	TSubclassOf <AActor> TargetBotClass;
+	UPROPERTY()
+	TArray<AActor*> SpawnPoints;
 
 	UPROPERTY(EditAnywhere, Category = "Enemy Spawn Properties")
 	float LoopTime;
 
 	UFUNCTION()
 	void SpawnEnemies();
-
-	UPROPERTY()
-	int32 RandomValue = 0;
-
-	/** Camera Movement Component **/
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
-	bool bRotateCamera;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float CameraRadius;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float CameraZAngle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float CameraHeightAngle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float RotateSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float ZoomSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float RadiusMin;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float RadiusMax;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float MovementSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float EdgeForwardAxis;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float EdgeRightAxis;
 };
