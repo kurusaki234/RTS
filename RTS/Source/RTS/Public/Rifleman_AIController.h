@@ -46,7 +46,4 @@ public:
 	
 	UPROPERTY()
 	int32 CurrentPatrolPoint = 0;
-
-	
-
 };

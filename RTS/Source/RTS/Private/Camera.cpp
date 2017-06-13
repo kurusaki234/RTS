@@ -13,13 +13,19 @@ ACamera::ACamera()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	/** Setup Camera Movement Component **/
+	/*CameraBoom = CreateDefaultSubobject <UCameraComponent>(TEXT("Camera"));
+	CameraBoom->AttachTo(RootComponent);
+
+	Origin = CreateDefaultSubobject <UArrowComponent>(TEXT("Origin"));
+	Origin->AttachTo(RootComponent);*/
 }
 
 // Called when the game starts or when spawned
 void ACamera::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	FTimerHandle TimerHandle;
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ACamera::SpawnEnemies, LoopTime, true);
@@ -58,12 +64,15 @@ void ACamera::QuickSpawn()
 
 	for (int i = 0; i < FoundActors.Num(); i++)
 	{
-		FVector NewLocation = FVector(FoundActors[i]->GetActorLocation().X - 500.0f, 
-			FoundActors[i]->GetActorLocation().Y - 500.0f,
-			205.0f);
+		FVector NewLocation = FVector(FoundActors[i]->GetRootComponent()->GetSocketLocation("SpawnLocation").X,
+			FoundActors[i]->GetRootComponent()->GetSocketLocation("SpawnLocation").Y, 
+			FoundActors[i]->GetRootComponent()->GetSocketLocation("SpawnLocation").Z);
 
 		ARifleman* rifleman = World->SpawnActor<ARifleman>(ActorBP, NewLocation,
 			FRotator::ZeroRotator, SpawnInfo);
+
+		rifleman->SetActorScale3D(FVector(0.4));
+		rifleman->GetCharacterMovement()->MaxWalkSpeed = 200.0f;
 	}
 }
 
@@ -71,26 +80,28 @@ void ACamera::SpawnEnemies()
 {
 	FActorSpawnParameters SpawnInfo;
 
-	UWorld* const World = GetWorld();
+	TArray<AActor*> SpawnPoints;
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnPoint::StaticClass() , SpawnPoints);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TargetBotClass, SpawnPoints);
 
-	if (SpawnPoints.Num() > 0)
+	UE_LOG(LogTemp, Warning, TEXT("%d"), RandomValue);
+
+	//FVector NewLocation = SpawnPoints[RandomValue]->GetTargetLocation();
+
+	if (SpawnPoints[RandomValue] != nullptr)
 	{
-		int32 randomSpawnValue = FMath::RandRange(0, SpawnPoints.Num() - 1);
-
-		FVector NewLocation = SpawnPoints[randomSpawnValue]->GetActorLocation();
-
-		ARifleman* rifleman = World->SpawnActor<ARifleman>(ActorBP, NewLocation, FRotator::ZeroRotator, SpawnInfo);
+		ARifleman* rifleman = GetWorld()->SpawnActor<ARifleman>(ActorBP, SpawnPoints[RandomValue]->GetTargetLocation(), FRotator::ZeroRotator, SpawnInfo);
 
 		rifleman->SetActorScale3D(FVector(0.4));
 
 		rifleman->GetCharacterMovement()->MaxWalkSpeed = 200.0f;
 
-		rifleman->AIControllerType = ControllerType::CT_Bot;
+		rifleman->AIControllerType = ControllerType::CT_Bot; 
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Please put spawn points in order to spawn enemies"));
+		UE_LOG(LogTemp, Warning, TEXT("GG"));
 	}
+	
+	RandomValue = FMath::RandRange(0, SpawnPoints.Num() - 1);
 }
