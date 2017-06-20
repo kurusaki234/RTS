@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "BuildingMaster.generated.h"
 
+class AGhostBuilding;
+
 UCLASS()
 class RTS_API ABuildingMaster : public AActor
 {
@@ -21,7 +23,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	
-	
 };

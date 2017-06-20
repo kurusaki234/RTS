@@ -12,7 +12,8 @@ UCLASS()
 class RTS_API UStaticFunctionLibrary : public UObject
 {
 	GENERATED_BODY()
-	
+
+public:
 	static FORCEINLINE bool Trace(UWorld* world, TArray<AActor*>& ActorsToIgnore, const FVector& Start,
 		const FVector& End, FHitResult& HitOut, ECollisionChannel CollisionChannel = ECC_Pawn, bool ReturnPhysMat = false)
 	{

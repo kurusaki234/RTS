@@ -32,18 +32,23 @@ struct FGridProperty
 	UPROPERTY()
 	UMaterialInstance* materialInstance = nullptr;
 
-	UDecalComponent* decalInstance = nullptr;
+	UPROPERTY()
+	UDecalComponent* defaultDecalInstance = nullptr;
+
+	UPROPERTY()
+	UDecalComponent* buildableDecalInstance = nullptr;
+
+	UPROPERTY()
+	UDecalComponent* notBuildableDecalInstance = nullptr;
 
 	EGridState gridState = EGridState::GS_Buildable;
 
 	void Clear()
 	{
-		decalInstance = NULL;
-
 		if (bIsValid())
 		{
-			decalInstance->UnregisterComponent();
-			decalInstance = NULL;
+			defaultDecalInstance->UnregisterComponent();
+			defaultDecalInstance = NULL;
 		}
 	}
 
@@ -52,17 +57,44 @@ struct FGridProperty
 		return (gridState == EGridState::GS_Buildable);
 	}
 
-	void SpawnDecal(UObject* object)
+	void SpawnDecal(USceneComponent* object, UMaterialInstance* defaultInstance, UMaterialInstance* buildableInstance
+		,UMaterialInstance* notBuildableInstance)
 	{
-		decalInstance = UGameplayStatics::SpawnDecalAtLocation
+		defaultDecalInstance = UGameplayStatics::SpawnDecalAttached
 						(
-							object,
-							materialInstance,
+							defaultInstance,
 							Scale,
+							object,
+							NAME_None,
 							Location,
 							Rotation,
+							EAttachLocation::KeepWorldPosition,
 							LifeSpan
 						);
+
+		buildableDecalInstance = UGameplayStatics::SpawnDecalAttached
+		(
+			buildableInstance,
+			Scale,
+			object,
+			NAME_None,
+			Location,
+			Rotation,
+			EAttachLocation::KeepWorldPosition,
+			LifeSpan
+		);
+
+		notBuildableDecalInstance = UGameplayStatics::SpawnDecalAttached
+		(
+			notBuildableInstance,
+			Scale,
+			object,
+			NAME_None,
+			Location,
+			Rotation,
+			EAttachLocation::KeepWorldPosition,
+			LifeSpan
+		);
 	}
 	
 	FGridProperty() {}
@@ -118,16 +150,7 @@ public:
 	AGrid();
 	~AGrid();
 
-protected:
-	virtual void OnConstruction(const FTransform& transform) override;
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY()
 	FVector gridTransform;
 
@@ -155,7 +178,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	UMaterialInstance* notBuildableMaterial = nullptr;
 
-private:
 	void AddUninitialized(const int32 RowCount, const int32 ColCount);
 
 	void Clear();
