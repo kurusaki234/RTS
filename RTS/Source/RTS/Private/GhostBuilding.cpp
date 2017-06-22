@@ -61,6 +61,7 @@ void AGhostBuilding::BeginPlay()
 	Super::BeginPlay();
 
 	SpawnDecal();
+	//UpdateDecal();
 }
 
 // Called every frame
@@ -72,9 +73,10 @@ void AGhostBuilding::Tick(float DeltaTime)
 		*GetRootComponent()->GetComponentLocation().ToString());
 	UE_LOG(LogTemp, Warning, TEXT("Update Raycast Status: %s"), (GetUpdateRaycast()) ? TEXT("True") : TEXT("False"));
 
+	//UpdateDecal();
 	/*if (!GetUpdateRaycast())
 	{
-		UpdateDecal();
+		
 		StoredLocation = GetRootComponent()->GetComponentLocation();
 		SetUpdateRaycast();
 	}
@@ -137,7 +139,7 @@ void AGhostBuilding::UpdateDecal()
 		{
 			FHitResult HitInfo(ForceInit);
 
-			UBoxComponent* BoxComponent = CreateDefaultSubobject <UBoxComponent>(TEXT("Box Collision"));
+			//UBoxComponent* BoxComponent = CreateDefaultSubobject <UBoxComponent>(TEXT("Box Collision"));
 
 			StoredLocation = GetRootComponent()->GetComponentLocation();
 
@@ -150,7 +152,7 @@ void AGhostBuilding::UpdateDecal()
 
 			End = Start + GetActorUpVector() * Distance;
 
-			if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_WorldStatic))
+			/*if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_WorldStatic))
 			{
 				if (HitInfo.GetActor()->ActorHasTag("Building"))
 				{
@@ -161,9 +163,9 @@ void AGhostBuilding::UpdateDecal()
 			else
 			{
 				/*UE_LOG(LogTemp, Warning, TEXT("Start Location: %s, End Location: %s, Start Value: %d"), *Start.ToString()
-				, *End.ToString(), StartLocation);*/
+				, *End.ToString(), StartLocation);
 				grid->gridMap.Rows[y].Columns[x].gridState = EGridState::GS_Buildable;
-			}
+			}*/
 
 			if (grid->gridMap.Rows[y].Columns[x].gridState == EGridState::GS_Buildable)
 			{
