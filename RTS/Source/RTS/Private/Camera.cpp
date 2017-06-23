@@ -37,34 +37,11 @@ void ACamera::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &ACamera::Select);
-	PlayerInputComponent->BindAction("Spawn", IE_Pressed, this, &ACamera::QuickSpawn);
 }
 
 void ACamera::Select()
 {
 
-}
-
-void ACamera::QuickSpawn()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("HELLO"));
-	TArray<AActor*> FoundActors;
-
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TargetClass, FoundActors);
-
-	FActorSpawnParameters SpawnInfo;
-
-	UWorld* const World = GetWorld();
-
-	for (int i = 0; i < FoundActors.Num(); i++)
-	{
-		FVector NewLocation = FVector(FoundActors[i]->GetActorLocation().X - 500.0f, 
-			FoundActors[i]->GetActorLocation().Y - 500.0f,
-			205.0f);
-
-		ARifleman* rifleman = World->SpawnActor<ARifleman>(ActorBP, NewLocation,
-			FRotator::ZeroRotator, SpawnInfo);
-	}
 }
 
 void ACamera::SpawnEnemies()

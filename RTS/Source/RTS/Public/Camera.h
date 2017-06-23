@@ -31,8 +31,6 @@ public:
 
 	void Select();
 
-	void QuickSpawn();
-
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
 	TSubclassOf <AActor> TargetClass;
 
