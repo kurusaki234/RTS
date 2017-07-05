@@ -14,12 +14,12 @@ void ARTSPlayerController::Possess(APawn* Pawn)
 {
 	Super::Possess(Pawn);
 
-	if (RTSUIWidgetBP)
+	/*if (RTSUIWidgetBP)
 	{
 		RTSUIWidget = CreateWidget <URTS_UI>(this, RTSUIWidgetBP);
 
 		RTSUIWidget->AddToViewport();
-	}
+	}*/
 }
 
 void ARTSPlayerController::BeginPlay()
@@ -45,7 +45,7 @@ void ARTSPlayerController::Tick(float DeltaSeconds)
 	//GetHitResultUnderCursorByChannel()
 }
 
-bool ARTSPlayerController::GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const
+/*bool ARTSPlayerController::GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const
 {
 	UWorld* world = GetWorld();
 
@@ -58,6 +58,6 @@ bool ARTSPlayerController::GetMouseWorldPosition(FVector2D MousePos, FVector& Lo
 	}
 
 	return (DeprojectMousePositionToWorld(WorldPos, LookDirection));
-}
+}*/
 
 

@@ -24,7 +24,7 @@ class RTS_API ARTSPlayerController : public APlayerController
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	bool GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const;
+	/*bool GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -32,5 +32,5 @@ protected:
 
 private:
 	// UI Reference
-	URTS_UI* RTSUIWidget;
+	URTS_UI* RTSUIWidget;*/
 };
