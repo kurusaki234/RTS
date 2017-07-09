@@ -4,13 +4,13 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BehaviorTree.h"
-#include "Rifleman_AIController.generated.h"
+#include "SelectableUnits_AIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RTS_API ARifleman_AIController : public AAIController
+class RTS_API ASelectableUnits_AIController : public AAIController
 {
 	GENERATED_BODY()
 	
@@ -38,7 +38,7 @@ class RTS_API ARifleman_AIController : public AAIController
 
 public:
 	// Constructor
-	ARifleman_AIController();
+	ASelectableUnits_AIController();
 
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
 

@@ -5,8 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "Camera.generated.h"
 
-class ARifleman;
-class ARifleman_AIController;
+class ASelectableUnits;
+class ASelectableUnits_AIController;
 class ASpawnPoint;
 
 UCLASS()
@@ -35,7 +35,7 @@ public:
 	TSubclassOf <AActor> TargetClass;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	TSubclassOf <ARifleman> ActorBP;
+	TSubclassOf <ASelectableUnits> ActorBP;
 
 	UPROPERTY()
 	TArray<AActor*> SpawnPoints;

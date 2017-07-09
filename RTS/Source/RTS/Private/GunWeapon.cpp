@@ -85,12 +85,12 @@ USkeletalMeshComponent * AGunWeapon::GetWeaponMesh() const
 	return nullptr;
 }
 
-ARifleman * AGunWeapon::GetPawnOwner() const
+ASelectableUnits * AGunWeapon::GetPawnOwner() const
 {
 	return nullptr;
 }
 
-void AGunWeapon::SetOwningPawn(ARifleman * ARifleman)
+void AGunWeapon::SetOwningPawn(ASelectableUnits * ASelectableUnits)
 {}
 
 float AGunWeapon::GetEquipStartedTime() const

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
-#include "Rifleman.generated.h"
+#include "SelectableUnits.generated.h"
 
 UENUM()
 enum class ControllerType
@@ -13,13 +13,16 @@ enum class ControllerType
 };
 
 UCLASS()
-class RTS_API ARifleman : public ACharacter
+class RTS_API ASelectableUnits : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ARifleman();
+	ASelectableUnits();
+
+	// Spawn holster, setup initial variables
+	virtual void PostInitializeComponents() override;
 
 protected:
 	// Called when the game starts or when spawned

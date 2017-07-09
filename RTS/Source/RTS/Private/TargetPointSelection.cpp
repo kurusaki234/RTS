@@ -3,12 +3,12 @@
 #include "RTS.h"
 #include "TargetPointSelection.h"
 #include "AITargetPoint.h"
-#include "Rifleman_AIController.h"
+#include "SelectableUnits_AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 EBTNodeResult::Type UTargetPointSelection::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
-	ARifleman_AIController* AICon = Cast<ARifleman_AIController>(OwnerComp.GetAIOwner());
+	ASelectableUnits_AIController* AICon = Cast<ASelectableUnits_AIController>(OwnerComp.GetAIOwner());
 
 	/*If the Controller is valid:
 	1)Get the Blackboard Component and the Current Point of the bot

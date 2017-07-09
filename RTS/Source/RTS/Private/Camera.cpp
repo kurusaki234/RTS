@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
-#include "Rifleman.h"
-#include "Rifleman_AIController.h"
+#include "SelectableUnits.h"
+#include "SelectableUnits_AIController.h"
 #include "SpawnPoint.h"
 #include "Camera.h"
 
@@ -58,13 +58,13 @@ void ACamera::SpawnEnemies()
 
 		FVector NewLocation = SpawnPoints[randomSpawnValue]->GetActorLocation();
 
-		ARifleman* rifleman = World->SpawnActor<ARifleman>(ActorBP, NewLocation, FRotator::ZeroRotator, SpawnInfo);
+		ASelectableUnits* SelectableUnits = World->SpawnActor<ASelectableUnits>(ActorBP, NewLocation, FRotator::ZeroRotator, SpawnInfo);
 
-		rifleman->SetActorScale3D(FVector(0.4));
+		SelectableUnits->SetActorScale3D(FVector(0.4));
 
-		rifleman->GetCharacterMovement()->MaxWalkSpeed = 200.0f;
+		SelectableUnits->GetCharacterMovement()->MaxWalkSpeed = 200.0f;
 
-		rifleman->AIControllerType = ControllerType::CT_Bot;
+		SelectableUnits->AIControllerType = ControllerType::CT_Bot;
 	}
 	else
 	{

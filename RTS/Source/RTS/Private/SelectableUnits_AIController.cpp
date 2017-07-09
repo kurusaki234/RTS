@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
-#include "Rifleman.h"
+#include "SelectableUnits.h"
 #include "AITargetPoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
-#include "Rifleman_AIController.h"
+#include "SelectableUnits_AIController.h"
 
-ARifleman_AIController::ARifleman_AIController()
+ASelectableUnits_AIController::ASelectableUnits_AIController()
 {
 	// Initialize blackboard and behavior tree
 	BehaviorComp = CreateDefaultSubobject <UBehaviorTreeComponent>(TEXT("BehaviorComp"));
@@ -18,12 +18,12 @@ ARifleman_AIController::ARifleman_AIController()
 	LocationToGoKey = "LocationToGo";
 }
 
-void ARifleman_AIController::Possess(APawn* Pawn)
+void ASelectableUnits_AIController::Possess(APawn* Pawn)
 {
 	Super::Possess(Pawn);
 
 	// Get reference to the character
-	ARifleman* AICharacter = Cast <ARifleman>(Pawn);
+	ASelectableUnits* AICharacter = Cast <ASelectableUnits>(Pawn);
 
 	if (AICharacter)
 	{

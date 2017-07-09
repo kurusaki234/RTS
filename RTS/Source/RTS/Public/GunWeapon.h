@@ -107,10 +107,10 @@ private:
 
 	/** Get Pawn Owner **/
 	UFUNCTION(BlueprintCallable, Category = "Game | Weapon")
-	class ARifleman* GetPawnOwner() const; 
+	class ASelectableUnits* GetPawnOwner() const; 
 
 	/** Set the weapon's owning pawn **/
-	void SetOwningPawn(ARifleman* ARifleman);
+	void SetOwningPawn(ASelectableUnits* ASelectableUnits);
 
 	/** Gets last time when this weapon was switched to **/
 	float GetEquipStartedTime() const;
@@ -121,7 +121,7 @@ private:
 protected:
 	/** Pawn Owner **/
 	UPROPERTY(Transient)
-	class ARifleman* MyPawn;
+	class ASelectableUnits* MyPawn;
 
 	/** Weapon Data **/
 	UPROPERTY(EditDefaultsOnly, Category = "Config")
