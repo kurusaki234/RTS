@@ -3,20 +3,16 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
-#include "Camera.generated.h"
-
-class AInfantryUnits;
-class ASelectableUnits_AIController;
-class ASpawnPoint;
+#include "Units.generated.h"
 
 UCLASS()
-class RTS_API ACamera : public APawn
+class RTS_API AUnits : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ACamera();
+	AUnits();
 
 protected:
 	// Called when the game starts or when spawned
@@ -29,20 +25,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void Select();
-
-	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	TSubclassOf <AActor> TargetClass;
-
-	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	TSubclassOf <AInfantryUnits> ActorBP;
-
-	UPROPERTY()
-	TArray<AActor*> SpawnPoints;
-
-	UPROPERTY(EditAnywhere, Category = "Enemy Spawn Properties")
-	float LoopTime;
-
-	UFUNCTION()
-	void SpawnEnemies();
+	
+	
 };

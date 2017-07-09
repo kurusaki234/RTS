@@ -2,14 +2,18 @@
 
 #pragma once
 
-#include "Engine/GameInstance.h"
-#include "RTSGameInstance.generated.h"
+#include "WheeledVehicle.h"
+#include "TankUnits.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RTS_API URTSGameInstance : public UGameInstance
+class RTS_API ATankUnits : public AWheeledVehicle
 {
 	GENERATED_BODY()
+	
+	
+	
+	
 };

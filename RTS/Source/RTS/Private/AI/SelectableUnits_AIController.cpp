@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
-#include "SelectableUnits.h"
+#include "InfantryUnits.h"
 #include "AITargetPoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
@@ -18,12 +18,12 @@ ASelectableUnits_AIController::ASelectableUnits_AIController()
 	LocationToGoKey = "LocationToGo";
 }
 
-void ASelectableUnits_AIController::Possess(APawn* Pawn)
+void ASelectableUnits_AIController::Possess(APawn* OwnerPawn)
 {
-	Super::Possess(Pawn);
+	Super::Possess(OwnerPawn);
 
 	// Get reference to the character
-	ASelectableUnits* AICharacter = Cast <ASelectableUnits>(Pawn);
+	AInfantryUnits* AICharacter = Cast <AInfantryUnits>(OwnerPawn);
 
 	if (AICharacter)
 	{

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
-#include "SelectableUnits.h"
+#include "InfantryUnits.h"
 #include "SelectableUnits_AIController.h"
 #include "SpawnPoint.h"
 #include "Camera.h"
@@ -58,13 +58,11 @@ void ACamera::SpawnEnemies()
 
 		FVector NewLocation = SpawnPoints[randomSpawnValue]->GetActorLocation();
 
-		ASelectableUnits* SelectableUnits = World->SpawnActor<ASelectableUnits>(ActorBP, NewLocation, FRotator::ZeroRotator, SpawnInfo);
+		AInfantryUnits* InfantryUnits = World->SpawnActor<AInfantryUnits>(ActorBP, NewLocation, FRotator::ZeroRotator, SpawnInfo);
 
-		SelectableUnits->SetActorScale3D(FVector(0.4));
+		InfantryUnits->SetActorScale3D(FVector(0.4));
 
-		SelectableUnits->GetCharacterMovement()->MaxWalkSpeed = 200.0f;
-
-		SelectableUnits->AIControllerType = ControllerType::CT_Bot;
+		InfantryUnits->AIControllerType = ControllerType::CT_Bot;
 	}
 	else
 	{
