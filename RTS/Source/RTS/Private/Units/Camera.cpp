@@ -62,7 +62,7 @@ void ACamera::SpawnEnemies()
 
 		InfantryUnits->SetActorScale3D(FVector(0.4));
 
-		InfantryUnits->AIControllerType = ControllerType::CT_Bot;
+		//InfantryUnits->AIControllerType = ControllerType::CT_Bot;
 	}
 	else
 	{

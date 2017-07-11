@@ -8,6 +8,9 @@
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Runtime/UMG/Public/Slate/SObjectWidget.h"
 #include "Runtime/UMG/Public/IUMGModule.h"
+#include "RTSGameMode.h"
+#include "RTSGameState.h"
+#include "InfantryUnits.h"
 
 #define COLLISION_LANDSCAPE		ECC_GameTraceChannel1
 #define COLLISION_WEAPON		ECC_GameTraceChannel2

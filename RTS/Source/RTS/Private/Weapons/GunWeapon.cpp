@@ -1,12 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RTS.h"
-#include "GunWeapon.h"
+#include "Weapons/GunWeapon.h"
+#include "Particles/ParticleSystemComponent.h"
 
 
 // Sets default values
-AGunWeapon::AGunWeapon (const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+AGunWeapon::AGunWeapon(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+	SceneComponent = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("Root Component"));
+	RootComponent = SceneComponent;
+
 	Mesh = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("WeaponMesh3P"));
 	Mesh->MeshComponentUpdateFlag = EMeshComponentUpdateFlag::OnlyTickPoseWhenRendered;
 	Mesh->bReceivesDecals = false;
@@ -14,8 +18,9 @@ AGunWeapon::AGunWeapon (const FObjectInitializer& ObjectInitializer) : Super(Obj
 	Mesh->SetCollisionObjectType(ECC_WorldDynamic);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	Mesh->SetupAttachment(SceneComponent);
 
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	bLoopedMuzzleFX = false;
 	bLoopedFireAnim = false;
 	bPlayingFireAnim = false;
@@ -28,9 +33,6 @@ AGunWeapon::AGunWeapon (const FObjectInitializer& ObjectInitializer) : Super(Obj
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
-	SetRemoteRoleForBackwardsCompat(ROLE_SimulatedProxy);
-	bReplicates = true;
-	bNetUseOwnerRelevancy = true;
 }
 
 void AGunWeapon::PostInitializeComponents()
@@ -46,17 +48,56 @@ void AGunWeapon::Destroyed()
 }
 
 void AGunWeapon::OnEquip(const AGunWeapon * LastWeapon)
-{}
+{
+	AttachMeshToPawn();
+
+	bPendingEquip = true;
+	DetermineCurrentStance();
+
+	// Only play animation if last weapon is valid
+	if (LastWeapon)
+	{
+
+	}
+	else
+	{
+		OnEquipFinished();
+	}
+
+	if (MyPawn)
+	{
+		PlayWeaponSound(EquipSound);
+	}
+}
 
 void AGunWeapon::OnEquipFinished()
-{}
+{
+	AttachMeshToPawn();
+
+	bIsEquipped = true;
+}
 
 void AGunWeapon::OnUnEquip()
 {}
 
+void AGunWeapon::OnEnterHolster(AInfantryUnits * NewOwner)
+{
+	SetOwningPawn(NewOwner);
+}
+
+void AGunWeapon::OnLeaveHolster()
+{
+	SetOwningPawn(NULL);
+
+	if (IsAttachedToPawn())
+	{
+		OnUnEquip();
+	}
+}
+
 bool AGunWeapon::IsEquipped() const
 {
-	return false;
+	return bIsEquipped;
 }
 
 bool AGunWeapon::IsAttachedToPawn() const
@@ -72,26 +113,36 @@ void AGunWeapon::StopFire()
 
 bool AGunWeapon::CanFire() const
 {
-	return false;
+	bool bCanFire = MyPawn && MyPawn->CanFire();
+	bool bStateOKToFire = ((CurrentStance == ECurrentStance::Idle) ||
+		(CurrentStance == ECurrentStance::Firing));
+	return ((bCanFire == true) && (bStateOKToFire == true));
 }
 
 ECurrentStance::Type AGunWeapon::GetCurrentStance() const
 {
-	return ECurrentStance::Type();
+	return CurrentStance;
 }
 
 USkeletalMeshComponent * AGunWeapon::GetWeaponMesh() const
 {
-	return nullptr;
+	return Mesh;
 }
 
 AInfantryUnits * AGunWeapon::GetPawnOwner() const
 {
-	return nullptr;
+	return MyPawn;
 }
 
-void AGunWeapon::SetOwningPawn(AInfantryUnits * AInfantryUnits)
-{}
+void AGunWeapon::SetOwningPawn(AInfantryUnits* NewOwner)
+{
+	if (MyPawn != NewOwner)
+	{
+		MyPawn = NewOwner;
+
+		SetOwner(NewOwner);
+	}
+}
 
 float AGunWeapon::GetEquipStartedTime() const
 {
@@ -125,10 +176,24 @@ void AGunWeapon::DetermineCurrentStance()
 {}
 
 void AGunWeapon::AttachMeshToPawn()
-{}
+{
+	if (MyPawn)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttachMeshToPawn"));
+		FName AttachPoint = MyPawn->GetWeaponAttachPoint();
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *AttachPoint.ToString());
 
-void AGunWeapon::DetachMeshFromPawn()
-{}
+		USkeletalMeshComponent* WeaponMesh = GetWeaponMesh();
+		USkeletalMeshComponent* PawnMesh = MyPawn->GetPawnMesh();
+
+		WeaponMesh->AttachToComponent(PawnMesh, FAttachmentTransformRules::KeepRelativeTransform,
+			AttachPoint);
+
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *WeaponMesh->GetName());
+		WeaponMesh->SetHiddenInGame(false);
+	}
+}
 
 UAudioComponent * AGunWeapon::PlayWeaponSound(USoundCue * Sound)
 {
