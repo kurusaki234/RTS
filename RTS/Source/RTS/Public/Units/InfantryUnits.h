@@ -17,11 +17,11 @@ public:
 	// Spawn holster, setup initial variables
 	virtual void PostInitializeComponents() override;
 
+	// Update the character
+	virtual void Tick(float DeltaSeconds) override;
+
 	// Cleanup holster
 	virtual void Destroyed() override;
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -74,10 +74,10 @@ public:
 	//					Animations					//
 	//////////////////////////////////////////////////
 	// Play anim montage
-	virtual float PlayAnimMontage(UAnimMontage * AnimMontage, float InPlayRate, FName StartSectionName) override;
+	virtual float PlayAnimMontage(class UAnimMontage * AnimMontage, float InPlayRate = 1.0f, FName StartSectionName = NAME_None) override;
 
 	// Stop anim montage
-	virtual void StopAnimMontage(UAnimMontage * AnimMontage) override;
+	virtual void StopAnimMontage(class UAnimMontage * AnimMontage) override;
 
 	// Stop playing all montages
 	void StopAllAnimMontages();
@@ -107,6 +107,31 @@ public:
 	// Infantry/Tank units force attacking the chosen target
 	void ForceAttack();
 
+	// Player pressed start fire action 
+	void OnStartFire();
+
+	// Player released start fire action 
+	void OnStopFire();
+
+	// Player pressed targeting action 
+	void OnStartTargeting();
+
+	// Player released targeting action 
+	void OnStopTargeting();
+
+	// Player pressed next weapon action 
+	void OnNextWeapon();
+
+	// Player pressed prev weapon action 
+	void OnPrevWeapon();
+
+	// Player pressed run action	
+	void OnStartRunning();
+
+	// Player released run action
+	void OnStopRunning();
+
+
 	/////////////////////////////////////////////////////////////
 	//						Reading Data					   //
 	/////////////////////////////////////////////////////////////
@@ -126,6 +151,10 @@ public:
 	// Get Specific Weapon From Holster By Using Index
 	class AGunWeapon* GetHolsterWeapon(int32 index) const;
 
+	// Get Targeting State
+	UFUNCTION(BlueprintCallable, Category = "Game | Weapon")
+		bool IsTargeting() const;
+
 	// Get Firing State
 	UFUNCTION(BlueprintCallable, Category = "Game | Weapon")
 		bool IsFiring() const;
@@ -137,8 +166,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game | Weapon")
 		float GetTargetingSpeedModifier() const;
 
+	// Get Running State
+	UFUNCTION(BlueprintCallable, Category = "Pawn")
+		bool IsRunning() const;
+
 	// Get Max Health
-	int32 GetMaxHealth() const;
+	int32 GetHealth() const;
+
+	// Set Health
+	void SetHealth(int32 value);
+
+	// Get Total Damage
+	float GetDamage() const;
+
+	// Set Total Damage
+	void SetDamage(float value);
+
+	// Get Attack Range
+	float GetAttackRange() const;
+
+	// Set Attack Range
+	void SetAttackRange(float value);
 
 	// Check if pawn is still alive
 	bool IsAlive() const;
@@ -210,6 +258,9 @@ protected:
 	// Handles Sound For Running
 	void UpdateRunSounds();
 
+private:
+	bool IsMoving();
+
 public:
 	///////////////////////////////////////////////////////////
 	//						Damage & Death					 //
@@ -221,6 +272,14 @@ public:
 	// Current health of the pawn 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 		int32 InitialHealth;
+
+	// Total damage of the pawn
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+		float AttackDamage;
+
+	// Attack range of the pawn
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+		float AttackRange;
 
 	// Take damage, handles death 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent,
@@ -244,9 +303,12 @@ public:
 	virtual void FellOutOfWorld(const class UDamageType& DamageType) override;
 
 protected:
+	virtual void OnDeath(float Damage, struct FDamageEvent const& DamageEvent,
+		class APawn* InstigatingPOawn, class AActor* DamageCauser);
+
 	// Play effects On Hit
 	virtual void PlayHit(float DamageTaken, struct FDamageEvent const& DamageEvent,
-		class APawn* InstigatingPawn, class AActor* DamageCauser, bool bKilled);
+		class APawn* InstigatingPawn, class AActor* DamageCauser);
 
 	// Switch to ragdoll
 	void SetRagdollPhysics();
@@ -268,4 +330,6 @@ private:
 	float movementSpeed;
 
 	float damage;
+
+	float attackRange;
 };

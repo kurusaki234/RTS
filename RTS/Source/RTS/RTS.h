@@ -10,6 +10,7 @@
 #include "Runtime/UMG/Public/IUMGModule.h"
 #include "RTSGameMode.h"
 #include "RTSGameState.h"
+#include "RTSPlayerController.h"
 #include "InfantryUnits.h"
 
 #define COLLISION_LANDSCAPE		ECC_GameTraceChannel1

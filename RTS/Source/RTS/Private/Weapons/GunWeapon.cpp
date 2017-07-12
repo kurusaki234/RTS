@@ -38,6 +38,8 @@ AGunWeapon::AGunWeapon(const FObjectInitializer& ObjectInitializer) : Super(Obje
 void AGunWeapon::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	DetachMeshFromPawn();
 }
 
 void AGunWeapon::Destroyed()
@@ -57,7 +59,18 @@ void AGunWeapon::OnEquip(const AGunWeapon * LastWeapon)
 	// Only play animation if last weapon is valid
 	if (LastWeapon)
 	{
+		float Duration = PlayWeaponAnimation(EquipAnim);
 
+		if (Duration <= 0.0f)
+		{
+			// Failsafe
+			Duration = 0.5f;
+		}
+		EquipStartedTime = GetWorld()->GetTimeSeconds();
+		EquipDuration = Duration;
+
+		GetWorldTimerManager().SetTimer(TimerHandle_OnEquipFinished, this,
+			&AGunWeapon::OnEquipFinished, Duration, false);
 	}
 	else
 	{
@@ -75,10 +88,28 @@ void AGunWeapon::OnEquipFinished()
 	AttachMeshToPawn();
 
 	bIsEquipped = true;
+	bPendingEquip = false;
+
+	// Update the stance
+	DetermineCurrentStance();
 }
 
 void AGunWeapon::OnUnEquip()
-{}
+{
+	DetachMeshFromPawn();
+	bIsEquipped = false;
+	StopFire();
+
+	if (bPendingEquip)
+	{
+		StopWeaponAnimation(EquipAnim);
+		bPendingEquip = false;
+
+		GetWorldTimerManager().ClearTimer(TimerHandle_OnEquipFinished);
+	}
+	
+	DetermineCurrentStance();
+}
 
 void AGunWeapon::OnEnterHolster(AInfantryUnits * NewOwner)
 {
@@ -102,14 +133,26 @@ bool AGunWeapon::IsEquipped() const
 
 bool AGunWeapon::IsAttachedToPawn() const
 {
-	return false;
+	return bIsEquipped || bPendingEquip;
 }
 
 void AGunWeapon::StartFire()
-{}
+{
+	if (!bWantsToFire)
+	{
+		bWantsToFire = true;
+		DetermineCurrentStance();
+	}
+}
 
 void AGunWeapon::StopFire()
-{}
+{
+	if (bWantsToFire)
+	{
+		bWantsToFire = false;
+		DetermineCurrentStance();
+	}
+}
 
 bool AGunWeapon::CanFire() const
 {
@@ -146,34 +189,166 @@ void AGunWeapon::SetOwningPawn(AInfantryUnits* NewOwner)
 
 float AGunWeapon::GetEquipStartedTime() const
 {
-	return 0.0f;
+	return EquipStartedTime;
 }
 
 float AGunWeapon::GetEquipDuration() const
 {
-	return 0.0f;
+	return EquipDuration;
 }
 
 void AGunWeapon::SimulateWeaponFire()
-{}
+{
+	if (MuzzleFX)
+	{
+		USkeletalMeshComponent* UseWeaponMesh = GetWeaponMesh();
+
+		if (!bLoopedMuzzleFX || MuzzlePSC == NULL)
+		{
+			if (MyPawn)
+			{
+				AController* PlayerController = MyPawn->GetController();
+
+				if (PlayerController)
+				{
+					Mesh->GetSocketLocation(MuzzleAttachPoint);
+					MuzzlePSC = UGameplayStatics::SpawnEmitterAttached(MuzzleFX, Mesh, MuzzleAttachPoint);
+					MuzzlePSC->bOwnerNoSee = false;
+					MuzzlePSC->bOnlyOwnerSee = false;
+				}
+			}
+		}
+	}
+
+	if (!bLoopedFireAnim || !bPlayingFireAnim)
+	{
+		PlayWeaponAnimation(FireAnim);
+		bPlayingFireAnim = true;
+	}
+
+	if (bLoopedFireSound)
+	{
+		if (FireAC == NULL)
+		{
+			FireAC = PlayWeaponSound(FireLoopSound);
+		}
+		else
+		{
+			PlayWeaponSound(FireSound);
+		}
+	}
+}
 
 void AGunWeapon::StopSimulatingWeaponFire()
-{}
+{
+	if (bLoopedMuzzleFX)
+	{
+		if (MuzzlePSC != NULL)
+		{
+			MuzzlePSC->DeactivateSystem();
+
+			MuzzlePSC = NULL;
+		}
+	}
+
+	if (bLoopedFireAnim && bPlayingFireAnim)
+	{
+		StopWeaponAnimation(FireAnim);
+		bPlayingFireAnim = false;
+	}
+
+	if (FireAC)
+	{
+		FireAC->FadeOut(0.1f, 0.0f);
+		FireAC = NULL;
+
+		PlayWeaponSound(FireFinishSound);
+	}
+}
 
 void AGunWeapon::HandleFiring()
-{}
+{
+	SimulateWeaponFire();
+
+	if (MyPawn)
+	{
+		FireWeapon();
+
+		bRefiring = (CurrentStance == ECurrentStance::Firing && WeaponConfig.TimeIntervals > 0.0f);
+
+		if (bRefiring)
+		{
+			GetWorldTimerManager().SetTimer(TimerHandle_HandleFiring, this, &AGunWeapon::HandleFiring,
+				WeaponConfig.TimeIntervals, false);
+		}
+	}
+
+	LastFireTime = GetWorld()->GetTimeSeconds();
+}
 
 void AGunWeapon::OnBurstStarted()
-{}
+{
+	// Start firing, can be delayed to satisfy TimeBetweenShots
+	const float GameTime = GetWorld()->GetTimeSeconds();
+
+	if (LastFireTime > 0 && WeaponConfig.TimeIntervals > 0.0f &&
+		LastFireTime + WeaponConfig.TimeIntervals > GameTime)
+	{
+		GetWorldTimerManager().SetTimer(TimerHandle_HandleFiring, this,
+			&AGunWeapon::HandleFiring, LastFireTime + WeaponConfig.TimeIntervals - GameTime, false);
+	}
+	else
+	{
+		HandleFiring();
+	}
+}
 
 void AGunWeapon::OnBurstFinished()
-{}
+{
+	// Stop firing FX 
+	BurstCounter = 0;
+
+	StopSimulatingWeaponFire();
+
+	GetWorldTimerManager().ClearTimer(TimerHandle_HandleFiring);
+	bRefiring = false;
+}
 
 void AGunWeapon::SetCurrentStance(ECurrentStance::Type NewStance)
-{}
+{
+	const ECurrentStance::Type PrevStance = CurrentStance;
+
+	if (PrevStance == ECurrentStance::Firing && NewStance != ECurrentStance::Firing)
+	{
+		OnBurstFinished();
+	}
+
+	CurrentStance = NewStance;
+
+	if (PrevStance != ECurrentStance::Firing && NewStance == ECurrentStance::Firing)
+	{
+		OnBurstStarted();
+	}
+}
 
 void AGunWeapon::DetermineCurrentStance()
-{}
+{
+	ECurrentStance::Type NewStance = ECurrentStance::Idle;
+
+	if (bIsEquipped)
+	{
+		if (bWantsToFire)
+		{
+			NewStance = ECurrentStance::Firing;
+		}
+	}
+	else if (bPendingEquip)
+	{
+		NewStance = ECurrentStance::Equipping;
+	}
+
+	SetCurrentStance(NewStance);
+}
 
 void AGunWeapon::AttachMeshToPawn()
 {
@@ -195,22 +370,79 @@ void AGunWeapon::AttachMeshToPawn()
 	}
 }
 
+void AGunWeapon::DetachMeshFromPawn()
+{
+	Mesh->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+	Mesh->SetHiddenInGame(true);
+}
+
 UAudioComponent * AGunWeapon::PlayWeaponSound(USoundCue * Sound)
 {
-	return nullptr;
+	UAudioComponent* AC = NULL;
+
+	if (Sound && MyPawn)
+	{
+		AC = UGameplayStatics::SpawnSoundAttached(Sound, MyPawn->GetRootComponent());
+	}
+
+	return AC;
+}
+
+float AGunWeapon::PlayWeaponAnimation(const FWeaponAnim & Animation)
+{
+	float Duration = 0.0f;
+
+	if (MyPawn)
+	{
+		UAnimMontage* UseAnim = Animation.PawnAnim;
+
+		if (UseAnim)
+		{
+			Duration = MyPawn->PlayAnimMontage(UseAnim);
+		}
+	}
+
+	return Duration;
+}
+
+void AGunWeapon::StopWeaponAnimation(const FWeaponAnim & Animation)
+{
+	if (MyPawn)
+	{
+		UAnimMontage* UseAnim = Animation.PawnAnim;
+
+		if (UseAnim)
+		{
+			MyPawn->StopAnimMontage(UseAnim);
+		}
+	}
 }
 
 FVector AGunWeapon::GetMuzzleLocation() const
 {
-	return FVector();
+	USkeletalMeshComponent* UseMesh = GetWeaponMesh();
+
+	return UseMesh->GetSocketLocation("MuzzleAttachPoint");
 }
 
 FVector AGunWeapon::GetMuzzleDirection() const
 {
-	return FVector();
+	USkeletalMeshComponent* UseMesh = GetWeaponMesh();
+
+	return UseMesh->GetSocketRotation("MuzzleAttachPoint").Vector();
 }
 
 FHitResult AGunWeapon::WeaponTrace(const FVector & TraceFrom, const FVector & TraceTo) const
 {
-	return FHitResult();
+	static FName WeaponFireTag = FName(TEXT("WeaponTrace"));
+
+	// Perform trace to retrieve hit info
+	FCollisionQueryParams TraceParams(WeaponFireTag, true, Instigator);
+	TraceParams.bTraceAsyncScene = true;
+	TraceParams.bReturnPhysicalMaterial = true;
+
+	FHitResult Hit(ForceInit);
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceFrom, TraceTo, COLLISION_WEAPON, TraceParams);
+
+	return Hit;
 }

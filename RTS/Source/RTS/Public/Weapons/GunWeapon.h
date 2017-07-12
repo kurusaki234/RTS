@@ -36,8 +36,8 @@ struct FWeaponAnim
 {
 	GENERATED_USTRUCT_BODY()
 
-		UPROPERTY(EditDefaultsOnly, Category = "Animation")
-		UAnimMontage* PawnAnim;
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* PawnAnim;
 };
 
 UCLASS(Abstract, Blueprintable)
@@ -219,6 +219,9 @@ protected:
 	/** How much time weapon needs to be equipped **/
 	float EquipDuration;
 
+	// Burst counter
+	UPROPERTY(Transient)
+	int32 BurstCounter;
 
 	/** Handle for efficient management of OnEquipFinished timer **/
 	FTimerHandle TimerHandle_OnEquipFinished;
@@ -269,6 +272,12 @@ protected:
 
 	/** Play Weapon Sounds **/
 	UAudioComponent* PlayWeaponSound(USoundCue* Sound);
+
+	/** Play Weapon Animations **/
+	float PlayWeaponAnimation(const FWeaponAnim& Animation);
+
+	/** Stop Playing Weapon Animations **/
+	void StopWeaponAnimation(const FWeaponAnim& Animation);
 
 	/** Get the muzzle location of the weapon **/
 	FVector GetMuzzleLocation() const;
