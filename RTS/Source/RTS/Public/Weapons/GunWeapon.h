@@ -148,6 +148,7 @@ protected:
 		FName MuzzleAttachPoint;
 
 	/** Muzzle flash FX **/
+	UPROPERTY(EditDefaultsOnly, Category = Effects)
 	UParticleSystem* MuzzleFX;
 
 	/** Spawned component for muzzle FX **/
@@ -167,9 +168,11 @@ protected:
 		USoundCue* FireLoopSound;
 
 	/** Finished Burst Sound (bLoopedFireSound set) **/
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* FireFinishSound;
 
 	/** Equip Sound **/
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* EquipSound;
 
 	/** Equip Animations **/

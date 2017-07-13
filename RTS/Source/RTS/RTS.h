@@ -12,6 +12,7 @@
 #include "RTSGameState.h"
 #include "RTSPlayerController.h"
 #include "InfantryUnits.h"
+#include "StaticFunctionLibrary.h"
 
 #define COLLISION_LANDSCAPE		ECC_GameTraceChannel1
 #define COLLISION_WEAPON		ECC_GameTraceChannel2

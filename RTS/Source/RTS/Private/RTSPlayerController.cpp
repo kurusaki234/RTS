@@ -10,9 +10,9 @@ ARTSPlayerController::ARTSPlayerController()
 	
 }
 
-void ARTSPlayerController::Possess(APawn* Pawn)
+void ARTSPlayerController::Possess(APawn* OwnerPawn)
 {
-	Super::Possess(Pawn);
+	Super::Possess(OwnerPawn);
 
 	/*if (RTSUIWidgetBP)
 	{

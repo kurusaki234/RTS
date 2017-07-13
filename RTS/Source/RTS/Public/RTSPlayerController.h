@@ -18,7 +18,7 @@ class RTS_API ARTSPlayerController : public APlayerController
 
 	ARTSPlayerController();
 
-	virtual void Possess(APawn* Pawn) override;
+	virtual void Possess(APawn* OwnerPawn) override;
 
 	virtual void BeginPlay() override;
 

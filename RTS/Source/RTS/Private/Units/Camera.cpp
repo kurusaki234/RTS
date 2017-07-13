@@ -36,6 +36,10 @@ void ACamera::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &ACamera::Select);
+
+	PlayerInputComponent->BindAction("AttackMove", IE_Pressed, this, &ACamera::AttackMove);
+
+	PlayerInputComponent->BindAction("ForceAttack", IE_Pressed, this, &ACamera::ForceAttack);
 }
 
 void ACamera::Select()
@@ -67,4 +71,27 @@ void ACamera::SpawnEnemies()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Please put spawn points in order to spawn enemies"));
 	}
+}
+
+void ACamera::AttackMove()
+{
+	
+}
+
+void ACamera::CrushMove()
+{}
+
+void ACamera::ReverseMove()
+{}
+
+void ACamera::Stop()
+{}
+
+void ACamera::Patrolling()
+{}
+
+void ACamera::ForceAttack()
+{
+	
+
 }

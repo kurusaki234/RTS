@@ -206,26 +206,7 @@ void AInfantryUnits::StopAllAnimMontages()
 void AInfantryUnits::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
-
-void AInfantryUnits::AttackMove()
-{}
-
-void AInfantryUnits::CrushMove()
-{}
-
-void AInfantryUnits::ReverseMove()
-{}
-
-void AInfantryUnits::Stop()
-{}
-
-void AInfantryUnits::Patrolling()
-{}
-
-void AInfantryUnits::ForceAttack()
-{}
 
 void AInfantryUnits::OnStartFire()
 {

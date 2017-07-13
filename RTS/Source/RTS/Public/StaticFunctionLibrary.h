@@ -73,6 +73,36 @@ public:
 		);
 	}
 
+	template<typename T>
+	static FORCEINLINE int32 GetBPArray(UObject* Obj, const FName& Name, FString& CPRMacroType, TArray<T>& OutData)
+	{
+		if (!Obj)
+			return 0;
+
+		if (!Obj->IsValidLowLevel())
+			return 0;
+
+		if (Name == NAME_None)
+			return 0;
+
+		UArrayProperty* ArrayProp = FindField(Obj->GetClass(), Name);
+
+		if (ArrayProp != NULL)
+		{
+			FScriptArrayHelper_InContainer ArrayHelper(ArrayProp, Obj);
+
+			ArrayProp->GetCPPMacroType(CPRMacroType);
+
+			FString Value;
+
+			for (int32 i = 0; ArrayProp->Inner->ExportTextItem(Value, ArrayHelper.GetRawPtr(i), ArrayHelper.GetRawPtr(i), Obj, PPF_IncludeTransient))
+			{
+				OutData.Add(Value);
+			}
+			return ArrayHelper.Num();
+		}
+		return 0;
+	}
 public:
 	UStaticFunctionLibrary();
 };

@@ -45,4 +45,16 @@ public:
 
 	UFUNCTION()
 	void SpawnEnemies();
+
+	void AttackMove();
+
+	void CrushMove();
+
+	void ReverseMove();
+
+	void Stop();
+
+	void Patrolling();
+
+	void ForceAttack();
 };
