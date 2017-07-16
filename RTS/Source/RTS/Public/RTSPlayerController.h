@@ -10,6 +10,7 @@
  */
 
 class URTS_UI;
+class AFogOfWar;
 
 UCLASS()
 class RTS_API ARTSPlayerController : public APlayerController
@@ -23,6 +24,8 @@ class RTS_API ARTSPlayerController : public APlayerController
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	AFogOfWar* m_fow = nullptr;
 
 	/*bool GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const;
 

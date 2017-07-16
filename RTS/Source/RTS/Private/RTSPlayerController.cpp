@@ -27,7 +27,9 @@ void ARTSPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	m_fow->SpawnActor(AFogOfWar::StaticClass());
+	//m_fow->SpawnActor(AFogOfWar::StaticClass());
+	//FActorSpawnParameters SpawnParams;
+	m_fow = GetWorld()->SpawnActor<AFogOfWar>(AFogOfWar::StaticClass());
 
 	m_fow->revealSmoothCircle(FVector2D(100, 100), 30);
 }
