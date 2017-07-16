@@ -8,6 +8,7 @@ public class RTS : ModuleRules
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "GameplayTasks", "UMG", "Slate", "SlateCore" });
 
+        PrivateDependencyModuleNames.AddRange(new string[] { "RHI", "RenderCore" });
 
         PrivateDependencyModuleNames.AddRange(new string[] {});
 

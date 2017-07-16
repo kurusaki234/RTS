@@ -4,6 +4,7 @@
 #include "RTS_UI.h"
 #include "StaticFunctionLibrary.h"
 #include "RTSPlayerController.h"
+#include "FogOfWar.h"
 
 ARTSPlayerController::ARTSPlayerController()
 {
@@ -26,6 +27,9 @@ void ARTSPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	m_fow->SpawnActor(AFogOfWar::StaticClass());
+
+	m_fow->revealSmoothCircle(FVector2D(100, 100), 30);
 }
 
 void ARTSPlayerController::Tick(float DeltaSeconds)
