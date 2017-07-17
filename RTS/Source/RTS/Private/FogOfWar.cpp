@@ -26,7 +26,7 @@ AFogOfWar::AFogOfWar() : m_wholeTextureReagion(0, 0, 0, 0, m_textureSize, m_text
 
 	// Load the base material from your created material
 	{
-		static ConstructorHelpers::FObjectFinder<UMaterial> asset(TEXT("Material'/Game/Fow/FowMat.FowMat'"));
+		static ConstructorHelpers::FObjectFinder<UMaterial> asset(TEXT("Content'/FogOfWar/FowMat.FowMat'"));
 		m_dynamicMaterial = asset.Object;
 	}
 
