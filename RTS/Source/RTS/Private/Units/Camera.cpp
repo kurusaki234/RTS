@@ -75,7 +75,7 @@ void ACamera::SpawnEnemies()
 
 void ACamera::AttackMove()
 {
-	
+	UE_LOG(LogTemp, Warning, TEXT("Working, %i"), UnitsArray.Num());
 }
 
 void ACamera::CrushMove()
@@ -95,3 +95,40 @@ void ACamera::ForceAttack()
 	
 
 }
+
+void ACamera::GetBPArray()
+{
+	/*//static const FName MyProperty(TEXT("CurrentSelectedUnits"));
+	UClass* MyClass = GetClass();
+
+	for (TFieldIterator <UArrayProperty> PropIt(MyClass); PropIt; ++PropIt)
+	{
+	UArrayProperty* Property = *PropIt;
+
+	if (!Property->HasMetaData("CurrentSelectedUnits"))
+	{
+	continue;
+	}
+
+	const FName ArrayName = FName(*Property->HasMetaData("CurrentSelectedUnits"));
+	AInfantryUnits* InfantryClass = (AInfantryUnits*)StaticFindObjectFast(AInfantryUnits::StaticClass(), nullptr, ArrayName, true, true);
+
+	if (InfantryClass == nullptr)
+	{
+	continue;
+	}
+
+	UClass* PropertyClass = Property->GetOwnerClass();
+
+	UnitsArray.Add(InfantryClass);
+
+	UE_LOG(LogTemp, Warning, TEXT("Name: %s"), *InfantryClass->GetName());
+	if (UnitsArray.Num() > 0)
+	{
+	UE_LOG(LogTemp, Warning, TEXT("Name: %s"), *UnitsArray[0]->GetName());
+	}
+	}*/
+
+
+}
+

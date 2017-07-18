@@ -69,10 +69,10 @@ void AGhostBuilding::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UE_LOG(LogTemp, Warning, TEXT("Stored Location: %s, Current Component Location: %s"), *StoredLocation.ToString(),
+	/*UE_LOG(LogTemp, Warning, TEXT("Stored Location: %s, Current Component Location: %s"), *StoredLocation.ToString(),
 		*GetRootComponent()->GetComponentLocation().ToString());
 	UE_LOG(LogTemp, Warning, TEXT("Update Raycast Status: %s"), (GetUpdateRaycast()) ? TEXT("True") : TEXT("False"));
-
+	*/
 	//UpdateDecal();
 	/*if (!GetUpdateRaycast())
 	{
