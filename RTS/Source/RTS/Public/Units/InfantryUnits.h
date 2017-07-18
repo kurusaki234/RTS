@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 #include "InfantryUnits.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class RTS_API AInfantryUnits : public ACharacter
 {
 	GENERATED_BODY()

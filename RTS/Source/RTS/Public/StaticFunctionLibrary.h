@@ -74,35 +74,28 @@ public:
 	}
 
 	template<typename T>
-	static FORCEINLINE int32 GetBPArray(UObject* Obj, const FName& Name, FString& CPRMacroType, TArray<T>& OutData)
+	void GetBPArray()
 	{
-		if (!Obj)
-			return 0;
+		static const FName MyProperty(TEXT("CurrentSelectedUnits"))
+		UClass* MyClass = GetClass();
 
-		if (!Obj->IsValidLowLevel())
-			return 0;
-
-		if (Name == NAME_None)
-			return 0;
-
-		UArrayProperty* ArrayProp = FindField(Obj->GetClass(), Name);
-
-		if (ArrayProp != NULL)
+		for (UProperty* Property = MyClass->PropertyLink; Property; Property = Property->PropertyLinkNext)
 		{
-			FScriptArrayHelper_InContainer ArrayHelper(ArrayProp, Obj);
+			UArrayProperty* ArrayProperty = Cast<UArrayProperty>(Property);
 
-			ArrayProp->GetCPPMacroType(CPRMacroType);
-
-			FString Value;
-
-			for (int32 i = 0; ArrayProp->Inner->ExportTextItem(Value, ArrayHelper.GetRawPtr(i), ArrayHelper.GetRawPtr(i), Obj, PPF_IncludeTransient))
+			if (ArrayProperty && Property->GetFName() == MyProperty)
 			{
-				OutData.Add(Value);
+				// Need more work for arrays 
+				T MyValue = ArrayProperty->GetPropertyValue(Property->ContainerPtrToValuePtr<T>(this));
+
+				UE_LOG(LogTemp, Warning, TEXT("Value"));
+				break;
 			}
-			return ArrayHelper.Num();
 		}
-		return 0;
 	}
+
+
 public:
 	UStaticFunctionLibrary();
 };
+
