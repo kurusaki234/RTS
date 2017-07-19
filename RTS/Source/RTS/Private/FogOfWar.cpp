@@ -8,7 +8,8 @@
 // Sets default values
 AFogOfWar::AFogOfWar() : m_wholeTextureReagion(0, 0, 0, 0, m_textureSize, m_textureSize)
 {
-	m_coverSize = 5000;
+	m_coverSize = 60000;
+	//m_coverSize = 5000;
 
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -43,11 +44,13 @@ AFogOfWar::AFogOfWar() : m_wholeTextureReagion(0, 0, 0, 0, m_textureSize, m_text
 	// Initialise array to all black
 	for (int x = 0; x < m_textureSize; ++x)
 		for (int y = 0; y < m_textureSize; ++y)
-			m_pixelArray[y * m_textureSize + x] = 255;
+			m_pixelArray[y * m_textureSize + x] = 254;
 
 	// Propagate memory's array to texture
 	if (m_dynamicTexture)
 		UpdateTextureRegions(m_dynamicTexture, 0, 1, &m_wholeTextureReagion, m_textureSize, 1, m_pixelArray, false);
+
+
 
 }
 
@@ -103,7 +106,7 @@ void AFogOfWar::revealSmoothCircle(const FVector2D &pos, float radius)
 
 				uint8 oldVal = m_pixelArray[y * m_textureSize + x];
 				float lerp = FMath::GetMappedRangeValueClamped(FVector2D(smoothPct, 1.0f), FVector2D(0, 1), distance / texelRadius);
-				uint8 newVal = lerp * 255;
+				uint8 newVal = lerp * 254;
 				newVal = FMath::Min(newVal, oldVal);
 
 				m_pixelArray[y * m_textureSize + x] = newVal;

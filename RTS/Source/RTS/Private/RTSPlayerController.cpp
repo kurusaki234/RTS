@@ -31,7 +31,7 @@ void ARTSPlayerController::BeginPlay()
 	//FActorSpawnParameters SpawnParams;
 	m_fow = GetWorld()->SpawnActor<AFogOfWar>(AFogOfWar::StaticClass());
 
-	m_fow->revealSmoothCircle(FVector2D(300, 300), 30);
+	m_fow->revealSmoothCircle(FVector2D(300, 300), 3000);
 }
 
 void ARTSPlayerController::Tick(float DeltaSeconds)
