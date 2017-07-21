@@ -5,7 +5,6 @@
 #include "SpawnPoint.h"
 #include "Camera.h"
 
-
 // Sets default values
 ACamera::ACamera()
 {

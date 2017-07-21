@@ -8,7 +8,8 @@
 
 ARTSPlayerController::ARTSPlayerController()
 {
-	
+	PrimaryActorTick.bCanEverTick = false;
+	bHiddenFogOfWar = false;
 }
 
 void ARTSPlayerController::Possess(APawn* OwnerPawn)
@@ -29,9 +30,13 @@ void ARTSPlayerController::BeginPlay()
 
 	//m_fow->SpawnActor(AFogOfWar::StaticClass());
 	//FActorSpawnParameters SpawnParams;
-	m_fow = GetWorld()->SpawnActor<AFogOfWar>(AFogOfWar::StaticClass());
 
-	m_fow->revealSmoothCircle(FVector2D(300, 300), 3000);
+	if (!bHiddenFogOfWar)
+	{
+		m_fow = GetWorld()->SpawnActor<AFogOfWar>(AFogOfWar::StaticClass());
+
+		m_fow->revealSmoothCircle(FVector2D(300, 300), 3000);
+	}
 }
 
 void ARTSPlayerController::Tick(float DeltaSeconds)
