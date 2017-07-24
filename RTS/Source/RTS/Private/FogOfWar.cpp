@@ -20,7 +20,7 @@ AFogOfWar::AFogOfWar() : m_wholeTextureReagion(0, 0, 0, 0, m_textureSize, m_text
 	m_squarePlane->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
 	{
 		static ConstructorHelpers::FObjectFinder<UStaticMesh> asset(TEXT("/Engine/ArtTools/RenderToTexture/Meshes/S_1_Unit_Plane.S_1_Unit_Plane"));
-		m_squarePlane->SetStaticMesh(asset.Object);
+		m_squarePlane->StaticMesh = asset.Object;
 	}
 	m_squarePlane->TranslucencySortPriority = 100;
 	m_squarePlane->SetRelativeScale3D(FVector(m_coverSize, m_coverSize, 1));

@@ -23,13 +23,9 @@ class RTS_API ARTSPlayerController : public APlayerController
 
 	virtual void BeginPlay() override;
 
-public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	AFogOfWar* m_fow = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
-	bool bHiddenFogOfWar;
 
 	/*bool GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const;
 

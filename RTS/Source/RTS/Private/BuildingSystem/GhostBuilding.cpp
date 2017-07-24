@@ -20,11 +20,11 @@ AGhostBuilding::AGhostBuilding()
 	End = FVector(0);
 
 	static ConstructorHelpers::FObjectFinder <UMaterialInstance> defaultObject
-	(TEXT("MaterialInstance'/Game/Materials/Mat_GridDefault_Inst.Mat_GridDefault_Inst'"));
+	(TEXT("MaterialInstance'/Game/Material/Mat_GridDefault_Inst.Mat_GridDefault_Inst'"));
 	static ConstructorHelpers::FObjectFinder <UMaterialInstance> buildableObject
-	(TEXT("MaterialInstance'/Game/Materials/Mat_GridDefault_Inst.Mat_GridDefault_Inst'"));
+	(TEXT("MaterialInstance'/Game/Material/Mat_GridDefault_Inst.Mat_GridDefault_Inst'"));
 	static ConstructorHelpers::FObjectFinder <UMaterialInstance> notBuildableObject
-	(TEXT("MaterialInstance'/Game/Materials/Mat_GridDecal_Inst.Mat_GridDecal_Inst'"));
+	(TEXT("MaterialInstance'/Game/Material/Mat_GridDecal_Inst.Mat_GridDecal_Inst'"));
 
 	// Initialize grid material
 	if (defaultObject.Object == nullptr)
