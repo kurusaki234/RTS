@@ -6,7 +6,7 @@
 #include "Units.generated.h"
 
 UCLASS()
-class RTS_API AUnits : public APawn
+class RTS_API AUnits : public ACharacter
 {
 	GENERATED_BODY()
 

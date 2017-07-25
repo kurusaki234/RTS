@@ -17,6 +17,7 @@ class RTS_API ARTSPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
 	ARTSPlayerController();
 
 	virtual void Possess(APawn* OwnerPawn) override;
@@ -27,6 +28,8 @@ class RTS_API ARTSPlayerController : public APlayerController
 
 	AFogOfWar* m_fow = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+	bool bFogOfWar;
 	/*bool GetMouseWorldPosition(FVector2D MousePos, FVector& LookDirection) const;
 
 protected:
