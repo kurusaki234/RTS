@@ -130,7 +130,7 @@ void ARTS_HUD::DrawHUD()
 	Super::DrawHUD();
 
 	// Radar
-	DrawRadar();
+	/*DrawRadar();
 
 	DrawPlayer();
 
@@ -140,7 +140,7 @@ void ARTS_HUD::DrawHUD()
 
 	// Empty the radar actors in case the player moves out of range, 
 	// by doing so, we have always a valid display in our radar
-	RadarActors.Empty();
+	RadarActors.Empty();*/
 }
 
 
