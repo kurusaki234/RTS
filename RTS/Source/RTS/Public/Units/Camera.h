@@ -35,7 +35,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
 	TSubclassOf<AInfantryUnits>ActorBP;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Properties")
 	TArray<AActor*> SpawnPoints;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit Properties")
