@@ -38,7 +38,7 @@ AFogOfWar::AFogOfWar() : m_wholeTextureReagion(0, 0, 0, 0, m_textureSize, m_text
 		m_dynamicTexture->CompressionSettings = TextureCompressionSettings::TC_Grayscale;
 		m_dynamicTexture->SRGB = 0;
 		m_dynamicTexture->UpdateResource();
-		m_dynamicTexture->MipGenSettings = TMGS_NoMipmaps;
+		//m_dynamicTexture->MipGenSettings = TMGS_NoMipmaps;
 	}
 
 	// Initialise array to all black
