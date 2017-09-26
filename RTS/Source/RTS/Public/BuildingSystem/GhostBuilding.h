@@ -7,7 +7,7 @@
 #include "GhostBuilding.generated.h"
 
 UCLASS()
-class RTS_API AGhostBuilding : public AActor
+class RTS_API AGhostBuilding : public APawn
 {
 	GENERATED_BODY()
 	

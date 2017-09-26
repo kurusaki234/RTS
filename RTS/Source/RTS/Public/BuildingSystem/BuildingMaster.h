@@ -8,7 +8,7 @@
 class AGhostBuilding;
 
 UCLASS()
-class RTS_API ABuildingMaster : public AActor
+class RTS_API ABuildingMaster : public APawn
 {
 	GENERATED_BODY()
 	
