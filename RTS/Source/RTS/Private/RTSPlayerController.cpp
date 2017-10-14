@@ -4,11 +4,9 @@
 #include "RTS_UI.h"
 #include "StaticFunctionLibrary.h"
 #include "RTSPlayerController.h"
-#include "FogOfWar.h"
 
 ARTSPlayerController::ARTSPlayerController()
 {
-	bFogOfWar = false;
 }
 
 void ARTSPlayerController::Possess(APawn* OwnerPawn)
@@ -29,12 +27,6 @@ void ARTSPlayerController::BeginPlay()
 
 	//m_fow->SpawnActor(AFogOfWar::StaticClass());
 	//FActorSpawnParameters SpawnParams;
-	if (bFogOfWar)
-	{
-		m_fow = GetWorld()->SpawnActor<AFogOfWar>(AFogOfWar::StaticClass());
-
-		m_fow->revealSmoothCircle(FVector2D(300, 300), 3000);
-	}
 }
 
 void ARTSPlayerController::Tick(float DeltaSeconds)

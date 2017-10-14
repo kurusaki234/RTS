@@ -5,9 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "Camera.generated.h"
 
-class AInfantryUnits;
-class ASelectableUnits_AIController;
-class ASpawnPoint;
+class AFogOfWar;
+class URTS_UI;
 
 UCLASS()
 class RTS_API ACamera : public APawn
@@ -28,22 +27,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 
-	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	TSubclassOf <AActor> TargetClass;
+	AFogOfWar* m_fow = nullptr;
 
-	UPROPERTY(EditAnywhere, Category = "Spawn Properties")
-	TSubclassOf<AInfantryUnits>ActorBP;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn Properties")
-	TArray<AActor*> SpawnPoints;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit Properties")
-	TArray<AInfantryUnits*> UnitsArray;
-
-	UPROPERTY(EditAnywhere, Category = "Enemy Spawn Properties")
-	float LoopTime;
-
-	UFUNCTION()
-	void SpawnEnemies();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+		bool bFogOfWar;
 };

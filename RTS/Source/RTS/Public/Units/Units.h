@@ -5,6 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "Units.generated.h"
 
+class AFogOfWar;
+
 UCLASS()
 class RTS_API AUnits : public ACharacter
 {
@@ -25,6 +27,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+		bool bIsAlly;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+		bool bFogOfWar;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+		float fogOfWarRadius;
+
+	AFogOfWar* m_fow = nullptr;
 };

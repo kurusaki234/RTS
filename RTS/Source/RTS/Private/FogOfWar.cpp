@@ -76,7 +76,7 @@ void AFogOfWar::setSize(float s)
 	m_squarePlane->SetRelativeScale3D(FVector(m_coverSize, m_coverSize, 1));
 }
 
-void AFogOfWar::revealSmoothCircle(const FVector2D &pos, float radius)
+void AFogOfWar::revealSmoothCircle(const FVector2D &pos,  float radius)
 {
 	// Calculate the where circle center is inside texture space
 	FVector2D texel = pos - FVector2D(GetActorLocation().X, GetActorLocation().Y);
