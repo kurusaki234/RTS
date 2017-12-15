@@ -32,6 +32,8 @@ void ACamera::BeginPlay()
 void ACamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+    currentLevelName = GetLevel()->GetOuter()->GetName();
 }
 
 // Called to bind functionality to input

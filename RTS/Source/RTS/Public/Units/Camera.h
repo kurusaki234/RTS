@@ -33,4 +33,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
 		bool bFogOfWar;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+        FString currentLevelName;
 };
